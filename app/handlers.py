@@ -32,7 +32,7 @@ Choose option from keyboard below.""", reply_markup=kb.keyboard_main)
 async def cmd_name(message: Message, state: FSMContext) -> None:
     await state.update_data(btn_clicked = "Name")
 
-    await message.answer("Cool, send me name of song.", reply_markup=ReplyKeyboardRemove())
+    await message.answer("Send me name of song to install.", reply_markup=ReplyKeyboardRemove())
 
 
 #/link
@@ -40,7 +40,7 @@ async def cmd_name(message: Message, state: FSMContext) -> None:
 async def cmd_link(message: Message, state: FSMContext) -> None:
     await state.update_data(btn_clicked = "Link")
 
-    await message.answer("Cool, send me YT link.", reply_markup=ReplyKeyboardRemove())
+    await message.answer("Send me YT link of song to install.", reply_markup=ReplyKeyboardRemove())
 
 
 #/credits
@@ -68,14 +68,15 @@ async def search_install_name(message: Message, state: FSMContext) -> None:
 
             kb_results = builder_results.adjust(1).as_markup()
 
-            await message.answer(f"What i found by query {message.text}:", reply_markup = kb_results)
+            await message.answer(f"What i found by query <em>{message.text}</em>", reply_markup = kb_results)
 
         except Exception as e:
             await message.answer(f"Something went wrong (name/): {e}")
 
 
+
 #link process
-@router.message(lambda message: 'youtube.com' in message.text.lower())
+@router.message(lambda message: '.youtube.com/watch?v=' in message.text.lower())
 async def search_install_link(message: Message, state: FSMContext) -> None:
     user_data = await state.get_data()
 
@@ -84,7 +85,7 @@ async def search_install_link(message: Message, state: FSMContext) -> None:
 
         try:
             file_name = await yt.install_from_link(message.text)
-            await message.answer_audio(FSInputFile(file_name))
+            await message.answer_audio(FSInputFile(file_name), reply_markup = kb.keyboard_main)
 
             os.remove(file_name)
 
@@ -111,7 +112,7 @@ async def install_selected(callback: CallbackQuery, state: FSMContext) -> None:
         file_name = await yt.install_from_link(install_url)
 
         await callback.message.delete()
-        await callback.message.answer_audio(FSInputFile(file_name))
+        await callback.message.answer_audio(FSInputFile(file_name), reply_markup = kb.keyboard_main)
 
         os.remove(file_name)
     except Exception as e:

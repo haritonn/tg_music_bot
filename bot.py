@@ -1,4 +1,5 @@
 from aiogram import Dispatcher, Bot, html
+from aiogram.types import BotCommand
 from aiogram.enums import ParseMode
 from aiogram.dispatcher.dispatcher import MemoryStorage
 from aiogram.client.bot import DefaultBotProperties
@@ -15,9 +16,17 @@ load_dotenv('stuff.env')
 TOKEN = os.getenv('TOKEN')
 
 dp = Dispatcher(storage = MemoryStorage())
+bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+
+async def on_startup(bot: Bot) -> None:
+    """Building startup command /start"""
+    commands = [BotCommand(command = 'start', description = 'Launch bot'), BotCommand(command = 'credits', description = 'tg/source code'),
+                BotCommand(command = 'name', description = 'search song by name'), BotCommand(command = 'link', description = 'search song by link')]
+    await bot.set_my_commands(commands)
+
+dp.startup.register(on_startup)
 
 async def main() -> None:
-    bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     await dp.start_polling(bot, skip_updates=True)
 
 

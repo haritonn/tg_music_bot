@@ -10,7 +10,7 @@ keyboard_main = ReplyKeyboardMarkup(keyboard =
 
 keyboard_contact = InlineKeyboardMarkup(inline_keyboard = 
     [
-        [InlineKeyboardButton(text = "See source code", url = 'https://github.com/haritonn')],
+        [InlineKeyboardButton(text = "See source code", url = 'https://github.com/haritonn/tg_music_bot')],
         [InlineKeyboardButton(text = "Telegram", url= 'https://t.me/hariton_p')],
         [InlineKeyboardButton(text = "Go back", callback_data = "kb_back")]
     ])
