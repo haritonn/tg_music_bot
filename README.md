@@ -10,7 +10,7 @@
 
 # Необходимые конфигурации
 
-На стороне разработчика в репозитории проекта необходимо создать *stuff.env*, который будет содержать TOKEN (токен телеграм-бота, полученный через BotFather). Код ниже автоматически его достанет:
+На стороне разработчика в репозитории проекта необходимо создать *stuff.env*, который будет содержать TOKEN (токен телеграм-бота, полученный через [BotFather](https://t.me/BotFather)). Код ниже автоматически его достанет:
 ```python
 load_dotenv('stuff.env')
 TOKEN = os.getenv('TOKEN')
@@ -19,7 +19,7 @@ TOKEN = os.getenv('TOKEN')
 
 # Требования к окружению
 
-см. requirements.txt
+см. [requirements.txt](https://github.com/haritonn/tg_music_bot/blob/master/requirements.txt)
 > pip freeze
 
 # Сборка, использование
