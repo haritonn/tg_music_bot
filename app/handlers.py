@@ -64,7 +64,7 @@ async def search_install_name(message: Message, state: FSMContext) -> None:
             filenames = await yt.install_from_name(message.text)
             builder_results = InlineKeyboardBuilder()
             for i in filenames:
-                builder_results.add(InlineKeyboardButton(text = i[1], callback_data= f'install_{i[0][32:]}'))
+                builder_results.add(InlineKeyboardButton(text = f'{i[2]} - {i[1]}', callback_data= f'install_{i[0][32:]}'))
 
             kb_results = builder_results.adjust(1).as_markup()
 
@@ -80,7 +80,7 @@ async def search_install_link(message: Message, state: FSMContext) -> None:
     user_data = await state.get_data()
 
     if user_data.get("btn_clicked") == "Link":
-        await message.answer(f"Searching for LINK '{message.text}'...")
+        await message.answer(f"Searching for your link...")
 
         try:
             file_name = await yt.install_from_link(message.text)

@@ -37,5 +37,5 @@ async def install_from_name(query: str):
         info = ydl.extract_info(search_query, download = False)
         results = info.get('entries', [])
 
-    return [[video['url'], video['title']] for video in results]
+    return [[video['url'], video['title'], video['channel']] for video in results]
         
