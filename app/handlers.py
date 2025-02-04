@@ -104,7 +104,7 @@ async def away_from_credits(callback: CallbackQuery, state: FSMContext) -> None:
 async def install_selected(callback: CallbackQuery, state: FSMContext) -> None:
     await state.update_data(btn_clicked = '_')
 
-    id = callback.data[:8]
+    id = callback.data[8:]
     install_url = f'https://www.youtube.com/watch?v={id}'
 
     try:
