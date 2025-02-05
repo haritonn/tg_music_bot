@@ -63,8 +63,9 @@ async def search_install_name(message: Message, state: FSMContext) -> None:
         try:
             filenames = await yt.install_from_name(message.text)
             builder_results = InlineKeyboardBuilder()
+
             for i in filenames:
-                builder_results.add(InlineKeyboardButton(text = f'{i[2]} - {i[1]}', callback_data= f'install_{i[0][32:]}'))
+                builder_results.add(InlineKeyboardButton(text = f'{i[1]}', callback_data= f'i_{i[0]}'))
 
             kb_results = builder_results.adjust(1).as_markup()
 
@@ -100,21 +101,20 @@ async def away_from_credits(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.message.answer('Choose option from keyboard below.', reply_markup=kb.keyboard_main)
 
 #callback for selected /name
-@router.callback_query('install_' == F.data[:8])
+@router.callback_query('i_' == F.data[:2])
 async def install_selected(callback: CallbackQuery, state: FSMContext) -> None:
     await state.update_data(btn_clicked = '_')
 
-    id = callback.data[8:]
-    install_url = f'https://www.youtube.com/watch?v={id}'
+    id = callback.data[2:]
+    install_url = f'https://soundcloud.com{id}'
 
     try:
         file_name = await yt.install_from_link(install_url)
-
-        await callback.message.delete()
         await callback.message.answer_audio(FSInputFile(file_name))
 
         os.remove(file_name)
+
     except Exception as e:
-        await callback.message.answer('Something went wrong (name/installation/)')
+        await callback.message.answer('Something went wrong. (name/installation/)')
 
     

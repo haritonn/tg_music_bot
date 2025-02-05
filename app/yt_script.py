@@ -6,11 +6,9 @@ import requests
 async def install_from_link(url: str):
     """Searching and installing .mp3 file from video with specified URL"""
 
-    output_path = 'install_path/%(title)s.%(ext)s'
 
     ydl_params = {
         'format': 'bestaudio/best',
-        'outtmpl': output_path,
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -20,7 +18,7 @@ async def install_from_link(url: str):
 
     with yt_dlp.YoutubeDL(params=ydl_params) as ydl:
         info = ydl.extract_info(url, download = True)
-        filename = ydl.prepare_filename(info).replace('.webm', '.mp3').replace('.m4a', '.mp3')
+        filename = ydl.prepare_filename(info).replace('.webm', '.mp3').replace('.m4a', '.mp3').replace('.opus', '.mp3')
     
     return filename
 
@@ -40,5 +38,9 @@ async def install_from_name(query: str):
             res[i] = str(res[i])[9:].replace('">', ' ').replace('</a>', '').replace(' ', '@', 1).split(sep='@')
             if len(res[i][1]) >= 32:
                 res[i][1] = res[i][1][:63]
+
     return res
+
+
+
         
