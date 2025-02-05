@@ -1,4 +1,7 @@
 import yt_dlp 
+from bs4 import BeautifulSoup
+import urllib.parse
+import requests
 
 async def install_from_link(url: str):
     """Searching and installing .mp3 file from video with specified URL"""
@@ -23,19 +26,19 @@ async def install_from_link(url: str):
 
 
 async def install_from_name(query: str):
-    """Searching 10 best matches via specified query"""
+    query = urllib.parse.quote(query, safe='')
+    search_link = f'https://soundcloud.com/search?q={query}'
 
-    search_query = f'ytsearch10:{query}'
-    output_path = 'install_path/%(title)s.%(ext)s'
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    response = requests.get(search_link, headers =  headers)
 
-    ydl_searchparams = {
-        'quiet': True, 
-        'extract_flat': True
-    }
+    if response.status_code == 200:
+        bs = BeautifulSoup(response.text, 'html.parser')
+        res = bs.find_all('a')[6:-7]
 
-    with yt_dlp.YoutubeDL(params = ydl_searchparams) as ydl:
-        info = ydl.extract_info(search_query, download = False)
-        results = info.get('entries', [])
-
-    return [[video['url'], video['title'], video['channel']] for video in results]
+        for i in range(0, len(res)):
+            res[i] = str(res[i])[9:].replace('">', ' ').replace('</a>', '').replace(' ', '@', 1).split(sep='@')
+            if len(res[i][1]) >= 32:
+                res[i][1] = res[i][1][:63]
+    return res
         
