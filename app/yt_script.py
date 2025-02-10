@@ -42,7 +42,7 @@ async def install_from_name(query: str):
     for video in results:
         length = datetime.timedelta(seconds=video['duration'])
         seconds = str(length.seconds % 60)
-        minutes = '00' if length.seconds // 60 < 1 else str(length.seconds // 60)
+        minutes = '0' if length.seconds // 60 < 1 else str(length.seconds // 60)
 
         if (int(minutes) // 60 > 0):
             hours = str(int(minutes) // 60)
