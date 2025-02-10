@@ -53,7 +53,7 @@ async def cmd_link(message: Message, state: FSMContext) -> None:
 
 
 #name process
-@router.message(lambda message: 'youtube.com' not in message.text.lower())
+@router.message(lambda message: 'https://www.youtube.com/watch?v=' not in message.text.lower())
 async def search_install_name(message: Message, state: FSMContext) -> None:
     user_data = await state.get_data()
 
@@ -64,7 +64,7 @@ async def search_install_name(message: Message, state: FSMContext) -> None:
             filenames = await yt.install_from_name(message.text)
             builder_results = InlineKeyboardBuilder()
             for i in filenames:
-                builder_results.add(InlineKeyboardButton(text = f'{i[2]} - {i[1]}', callback_data= f'install_{i[0][32:]}'))
+                builder_results.add(InlineKeyboardButton(text = f'{i[3]} | {i[2]} - {i[1]}', callback_data= f'install_{i[0][32:]}'))
 
             kb_results = builder_results.adjust(1).as_markup()
 
@@ -75,7 +75,7 @@ async def search_install_name(message: Message, state: FSMContext) -> None:
 
 
 #link process
-@router.message(lambda message: 'youtube.com' in message.text.lower())
+@router.message(lambda message: 'https://www.youtube.com/watch?v=' in message.text.lower())
 async def search_install_link(message: Message, state: FSMContext) -> None:
     user_data = await state.get_data()
 
